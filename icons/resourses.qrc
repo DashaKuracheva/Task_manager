@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/resourses">
+        <file>tasks1.png</file>
+        <file>filter.png</file>
+        <file>deadline.png</file>
+        <file>calendar1.png</file>
+    </qresource>
+</RCC>
