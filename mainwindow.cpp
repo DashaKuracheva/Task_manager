@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "dialogOpen.h"
+#include "dialogCreate.h"
 //#include "taskTree.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -88,8 +89,9 @@ MainWindow::MainWindow(QWidget *parent)
     toolBar->addAction(QIcon(":/resourses/icons/filter.png"), "Фильтр", this, &MainWindow::filterOut);//фильтрация задач по статусу
 
     dialogOpen = nullptr;
-    /*dialogSave = nullptr;
     dialogCreate = nullptr;
+    /*dialogSave = nullptr;
+
     dialogEdit = nullptr;*/
 
 }
@@ -100,7 +102,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::addTask() {
-    // код
+    dialogCreate = new DialogCreate();
+    dialogCreate->show();
 }
 
 void MainWindow::search() {

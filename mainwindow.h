@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include "dialogOpen.h"
+#include "dialogCreate.h"
 //#include "taskTree.h"
 
 class MainWindow : public QMainWindow
@@ -27,8 +28,9 @@ private:
     QAction *open, *saveFile, *newFile, *tasksList, *calendar, *deadline, *filter;
 
     DialogOpen *dialogOpen;
-    /*DialogdSave *dialogSave;
     DialogCreate *dialogCreate;
+    /*DialogdSave *dialogSave;
+
     DialogEdit *dialogEdit;
     */
 
