@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "dialogOpen.h"
 //#include "taskTree.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -86,8 +87,8 @@ MainWindow::MainWindow(QWidget *parent)
     toolBar->addSeparator();
     toolBar->addAction(QIcon(":/resourses/icons/filter.png"), "Фильтр", this, &MainWindow::filterOut);//фильтрация задач по статусу
 
-    /*dialogOpen = nullptr;
-    dialogSave = nullptr;
+    dialogOpen = nullptr;
+    /*dialogSave = nullptr;
     dialogCreate = nullptr;
     dialogEdit = nullptr;*/
 
@@ -107,8 +108,11 @@ void MainWindow::search() {
 }
 
 void MainWindow::openFile() {
-    // код
-}
+    dialogOpen = new DialogOpen();
+    dialogOpen->setModal(true);
+    connect(dialogOpen, SIGNAL(fileOpened(const QString &)), this, SLOT(displayFileContent(const QString &)));
+    dialogOpen->exec();
+   }
 
 void MainWindow::addNewFile() {
     // код
