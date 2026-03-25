@@ -13,8 +13,8 @@ ______
 Для корректной работы приложения требуется настроенное окружение с указанными версиями инструментов.
 1. Клонирование репозитория^
 ```bash
-     git clone https://github.com/DashaKuracheva/Task_manager
-     cd TASK_manager
+     git clone https://github.com/DashaKuracheva/Task_manager.git Task_manager_test
+     cd Task_manager_test
 ```
 2. Создание директории сборки и переход в нее:
 ```bash
