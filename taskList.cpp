@@ -90,3 +90,45 @@ void TaskList::appendTaskItem(int index) {
 void TaskList::onEditClicked() {}
 
 void TaskList::onDeleteClicked() {}
+
+
+QJsonArray TaskList::JSArr() {
+    QJsonArray arr;
+    for (int i = 0; i < allTasks.size(); i++) {
+        Task &t = allTasks[i];
+        arr.append(taskToJS(t));
+    }
+    return arr;
+}
+
+
+void TaskList::loadFromJSArr(const QJsonArray &arr) {
+    allTasks.clear();
+    nextId = 0;
+    for (int i = 0; i < arr.size(); i++) {
+        QJsonValue v = arr.at(i);
+        if (!v.isObject()) continue;
+        Task t = taskFromJS(v.toObject());
+        if (t.id < 0) {
+            t.id = nextId++;
+        } else {
+            nextId = qMax(nextId, t.id + 1);
+        }
+        allTasks.append(t);
+    }
+    refreshList();
+}
+
+void TaskList::refreshList() {
+    list->clear();
+    for (int i = 0; i < allTasks.size(); i++)
+        appendTaskItem(i);
+}
+
+void TaskList::clearTasks() {
+    allTasks.clear();
+    list->clear();
+    info->setText("Выберите задачу из списка");
+    refreshList();
+}
+

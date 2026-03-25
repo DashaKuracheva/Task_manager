@@ -74,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent)
     toolBar->setIconSize(QSize(80, 80));
     addToolBar(toolBar);
 
+    toolBar->addAction(QIcon(":/resourses/icons/open.png"), "Открыть", this, SLOT(openFile()));
+    toolBar->addSeparator();
     toolBar->addAction(QIcon(":/resourses/icons/save.png"), "Сохранить", this, SLOT(saveMyFile()));
     toolBar->addSeparator();
     toolBar->addAction(QIcon(":/resourses/icons/calendar1.png"), "Календарь", this, SLOT(displayCalendar())); //toolBar->addAction(QIcon(":/resourses/calendar.png"), "Календарь", this, SLOT(displayCalendar()));
@@ -105,11 +107,38 @@ void MainWindow::openFile() {
 }
 
 void MainWindow::addNewFile() {
-    //КОД
+        if (myTaskList) {
+            myTaskList->clearTasks();
+        }
+        currentFilePath.clear();
+        statusBar()->showMessage("Новый проект создан (не сохранён)" , 3000);
 }
 
 void MainWindow::saveMyFile() {
-}
+        QString path = currentFilePath;
+        if (path.isEmpty()) {
+            path = QFileDialog::getSaveFileName(this, "Сохранить как", QString(), "JSON файлы (*.json)");
+            if (path.isEmpty()) return;
+            if (!path.endsWith(".json", Qt::CaseInsensitive)) path += ".json";
+            currentFilePath = path;
+        }
+
+        QJsonArray arr = myTaskList->JSArr();
+        QJsonObject root;
+        root["tasks"] = arr;
+        QJsonDocument doc(root);
+
+        QFile file(path);
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл для записи: " + path);
+            return;
+        }
+        file.write(doc.toJson(QJsonDocument::Indented));
+        file.close();
+
+        statusBar()->showMessage("Файл сохранён: " + path, 3000);
+    }
+
 void MainWindow::displayCalendar() {
     // код
 }
@@ -128,5 +157,26 @@ void MainWindow::filterOut() {
 
 
 void MainWindow::displayFileContent(const QString &content) {
- 
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(content.toUtf8(), &err);
+    if (err.error != QJsonParseError::NoError) {
+        QMessageBox::warning(this, "Ошибка", "Неверный JSON: " + err.errorString());
+        return;
+    }
+    QJsonArray arr;
+    if (doc.isObject()) {
+        QJsonObject root = doc.object();
+        if (root.contains("tasks") && root.value("tasks").isArray()) {
+            arr = root.value("tasks").toArray();
+        } else {
+            QMessageBox::warning(this, "Ошибка", "JSON не содержит массив tasks");
+            return;
+        }
+    } else if (doc.isArray()) {
+        arr = doc.array();
+    } else {
+        QMessageBox::warning(this, "Ошибка", "Ожидался JSON объект или массив");
+        return;
+    }
+    myTaskList->loadFromJSArr(arr);
 }

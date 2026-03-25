@@ -22,9 +22,6 @@ private:
     QPushButton *btnAdd, *btnSearch;
     QLineEdit *edtSearch;
     QToolBar *toolBar;
-
-    //QLabel *stat;строка состояния,если успею
-
     QAction *open, *saveFile, *newFile, *tasksList, *calendar, *deadline, *filter;
     TaskList *myTaskList;
     QString currentFilePath;
@@ -39,7 +36,7 @@ private slots:
     void showTasks();// для отображения/скрытия задач *tasksList
     void sortDeadline();//сортировка по дедлайну *deadline
     void filterOut();// фильтрация по статусу *filter
-    void displayFileContent();
+    void displayFileContent(const QString &content);
 
 };
 

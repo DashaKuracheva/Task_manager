@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QJsonObject>
 
 enum class TaskStatus {
     New,
@@ -32,6 +33,28 @@ inline TaskStatus stringToStatus(const QString &str) {
     if (str == "InProgress") return TaskStatus::InProgress;
     if (str == "Done") return TaskStatus::Done;
     return TaskStatus::New;
+}
+
+
+inline QJsonObject taskToJS(const Task &t) {
+    QJsonObject obj;
+    obj["title"] = t.title;
+    obj["description"] = t.description;
+    obj["deadline"] = t.deadline.toString(Qt::ISODate);
+    obj["status"] = statusToString(t.status);
+    obj["id"] = t.id;
+    return obj;
+}
+
+inline Task taskFromJS(const QJsonObject &obj) {
+    Task t;
+    t.title = obj.value("title").toString();
+    t.description = obj.value("description").toString();
+    QString dl = obj.value("deadline").toString();
+    t.deadline = QDateTime::fromString(dl, Qt::ISODate);
+    t.status = stringToStatus(obj.value("status").toString());
+    t.id = obj.value("id").toInt(-1);
+    return t;
 }
 
 #endif // TASK_H
