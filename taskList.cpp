@@ -1,4 +1,5 @@
 #include "taskList.h"
+#include <algorithm>
 
 TaskList::TaskList(QWidget *parent) : QWidget(parent) {
 
@@ -169,5 +170,28 @@ void TaskList::clearTasks() {
     list->clear();
     info->setText("Выберите задачу из списка");
     refreshList();
+}
+
+void TaskList::sortByDeadline() {
+    if (allTasks.isEmpty()) {
+        QMessageBox::information(this, "Сортировка", "Список задач пуст.");
+        return;
+    }
+
+    QString message;
+    if (sortAscending) {
+        sort(allTasks.begin(), allTasks.end(), [](const Task &a, const Task &b) {
+            return a.deadline < b.deadline;
+        });
+        message = "Задачи отсортированы по возрастанию срока (ближайший дедлайн).";
+    } else {
+        sort(allTasks.begin(), allTasks.end(), [](const Task &a, const Task &b) {
+            return a.deadline > b.deadline;
+        });
+        message = "Задачи отсортированы по убыванию срока (дальний дедлайн).";
+    }
+    sortAscending = !sortAscending;
+    refreshList();
+    QToolTip::showText(QCursor::pos(), message, this, {}, 3000);
 }
 

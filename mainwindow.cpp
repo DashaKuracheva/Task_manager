@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "dialogOpen.h"
 #include "dialogCreate.h"
-//#include "taskTree.h"
+#include <algorithm>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -178,7 +178,9 @@ void MainWindow::showTasks() {
 }
 
 void MainWindow::sortDeadline() {
-    // код
+    if (myTaskList) {
+        myTaskList->sortByDeadline();
+    }
 }
 
 void MainWindow::filterOut() {
