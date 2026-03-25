@@ -20,7 +20,6 @@ private:
     QLabel *title,*descript,*datatime,*lblStatus;
     QDateTimeEdit *edtTime;
     QComboBox *status;
-    QDialogButtonBox *buttonBox;
     QPushButton *save,*cancel;
 
 };

@@ -2,6 +2,7 @@
 
 DialogEdit::DialogEdit(QWidget *parent) : QDialog(parent) {
     setWindowTitle("Редактирование задачи");
+    setMinimumWidth(800);
     QVBoxLayout *vmainLayout = new QVBoxLayout(this);
     QHBoxLayout *hmainLayout = new QHBoxLayout();
 

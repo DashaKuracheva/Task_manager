@@ -195,3 +195,15 @@ void TaskList::sortByDeadline() {
     QToolTip::showText(QCursor::pos(), message, this, {}, 3000);
 }
 
+void TaskList::filter(const QString &statusName) {
+
+    for (int i = 0; i < list->topLevelItemCount(); i++) {
+        QTreeWidgetItem *item = list->topLevelItem(i);
+        QString itemStatus = item->text(2);
+        if (statusName == "Все" || itemStatus == statusName) {
+            item->setHidden(false); // Показываем
+        } else {
+            item->setHidden(true);  // Скрываем
+        }
+    }
+}

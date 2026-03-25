@@ -16,6 +16,8 @@ public:
     void loadFromJSArr(const QJsonArray &arr);
     void clearTasks();
     void sortByDeadline();
+    void filter(const QString &statusName);
+    bool isEmpty() const { return allTasks.isEmpty(); }
 
 public slots:
     void addTask(const Task &task);

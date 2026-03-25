@@ -3,9 +3,9 @@
 #include "dialogCreate.h"
 #include <algorithm>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
+    qDebug() << "Compiler: GCC" << __GNUC__ << "." << __GNUC_MINOR__;
     // формрование ЦЕНТРАЛЬНОГО ВИДЖЕТА
     widget = new QWidget(this);
 
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     rowLayout->setContentsMargins(200, 10, 200, 10);
     rowLayout->addWidget(edtSearch);
     rowLayout->addWidget(btnSearch);
-    rowLayout->addSpacing(300);
+    rowLayout->addSpacing(150);
     rowLayout->addWidget(btnAdd);
 
     myTaskList = new TaskList(this);
@@ -184,7 +184,26 @@ void MainWindow::sortDeadline() {
 }
 
 void MainWindow::filterOut() {
-    //код
+    if (myTaskList->isEmpty()) {
+            QMessageBox::warning(this, "Внимание", "У вас нет задач для фильтрации!");
+            return;
+        }
+    QMenu menu(this);
+    QAction *allAction = menu.addAction("Все задачи");
+    QAction *newAction = menu.addAction("New");
+    QAction *progressAction = menu.addAction("In Progress");
+    QAction *doneAction = menu.addAction("Done");
+    QAction *selectedAction = menu.exec(QCursor::pos());
+
+    if (selectedAction == allAction) {
+        myTaskList->filter("Все");
+    } else if (selectedAction == newAction) {
+        myTaskList->filter("New");
+    } else if (selectedAction == progressAction) {
+        myTaskList->filter("In Progress");
+    } else if (selectedAction == doneAction) {
+        myTaskList->filter("Done");
+    }
 }
 
 
