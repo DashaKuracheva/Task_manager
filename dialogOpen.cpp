@@ -38,5 +38,28 @@ void DialogOpen::browseFile() {
 }
 
 void DialogOpen::acceptOpening() {
+    QString path = pathEdit->text().trimmed();
+    if (path.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Укажите путь к файлу");
+        return;
+    }
 
+    QFileInfo F(path);
+    if (!F.exists() || !F.isFile()) {
+        QMessageBox::warning(this, "Ошибка", "Файл не найден");
+        return;
+    }
+
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл для чтения");
+        return;
+    }
+
+    QByteArray data = file.readAll();
+    file.close();
+
+    filePath = path;
+    fileOpened(QString::fromUtf8(data));
+    accept();
 }
