@@ -4,7 +4,7 @@
 #include <QtWidgets>
 #include "dialogOpen.h"
 #include "dialogCreate.h"
-//#include "taskTree.h"
+#include "taskList.h"
 
 class MainWindow : public QMainWindow
 {
@@ -26,15 +26,8 @@ private:
     //QLabel *stat;строка состояния,если успею
 
     QAction *open, *saveFile, *newFile, *tasksList, *calendar, *deadline, *filter;
-
-    DialogOpen *dialogOpen;
-    DialogCreate *dialogCreate;
-    /*DialogdSave *dialogSave;
-
-    DialogEdit *dialogEdit;
-    */
-
-   // TaskTreeWidget *myTaskView;
+    TaskList *myTaskList;
+    QString currentFilePath;
 
 private slots:
     void addTask();
@@ -46,11 +39,7 @@ private slots:
     void showTasks();// для отображения/скрытия задач *tasksList
     void sortDeadline();//сортировка по дедлайну *deadline
     void filterOut();// фильтрация по статусу *filter
-
-   /*
-    void displayFileContent(const QString &content);//для *dialogOPen
-    */
-
+    void displayFileContent();
 
 };
 

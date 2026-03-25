@@ -2,6 +2,7 @@
 #define DIALOGCREATE_H
 
 #include <QtWidgets>
+#include "task.h"
 
 class DialogCreate : public QDialog {
     Q_OBJECT
@@ -15,9 +16,13 @@ private:
     QHBoxLayout *rowLayout;
     QPushButton *btnCreate, *btnCancel;
     QLineEdit *edtName;
-    QLabel *name, *description, *deadline;
+    QLabel *name, *description, *dline;
     QTextEdit *edtDescription;
-    QDateEdit *data;
+    QDateTimeEdit *data;
+    QComboBox *statusCombo;
+
+signals:
+    void taskCreated(const Task &task);
 
 private slots:
     void create();

@@ -4,5 +4,7 @@
         <file>icons/filter.png</file>
         <file>icons/deadline.png</file>
         <file>icons/calendar1.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/delete.png</file>
     </qresource>
 </RCC>

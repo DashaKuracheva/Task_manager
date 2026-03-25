@@ -12,12 +12,15 @@ SOURCES += \
     dialogCreate.cpp \
     dialogOpen.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    taskList.cpp
 
 HEADERS += \
     dialogCreate.h \
     dialogOpen.h \
-    mainwindow.h
+    mainwindow.h \
+    task.h \
+    taskList.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

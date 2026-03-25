@@ -35,18 +35,12 @@ MainWindow::MainWindow(QWidget *parent)
     rowLayout->addSpacing(300);
     rowLayout->addWidget(btnAdd);
 
-    /* ЗАМЕНЯЕМ НА QTreeWidget
-    taskList = new QListWidget();
-    taskList->setEnabled(false);//заблокирован до открытия файла*/
-
-
-    //myTaskView = new TaskTreeWidget(this);
-
+    myTaskList = new TaskList(this);
 
     //формирование вертикального слоя
     mainLayout->addLayout(rowLayout);
     mainLayout->setAlignment(rowLayout, Qt::AlignTop);
-    //mainLayout->addWidget(myTaskView);
+    mainLayout->addWidget(myTaskList);
 
     widget->setLayout(mainLayout);
     setCentralWidget(widget);
@@ -80,30 +74,22 @@ MainWindow::MainWindow(QWidget *parent)
     toolBar->setIconSize(QSize(80, 80));
     addToolBar(toolBar);
 
-    toolBar->addAction(QIcon(":/resourses/icons/calendar1.png"), "Календарь", this, &MainWindow::displayCalendar); //toolBar->addAction(QIcon(":/resourses/calendar.png"), "Календарь", this, SLOT(displayCalendar()));
+    toolBar->addAction(QIcon(":/resourses/icons/calendar1.png"), "Календарь", this, SLOT(displayCalendar())); //toolBar->addAction(QIcon(":/resourses/calendar.png"), "Календарь", this, SLOT(displayCalendar()));
     toolBar->addSeparator();
-    toolBar->addAction(QIcon(":/resourses/icons/tasks1.png"), "Список задач", this, &MainWindow::showTasks);//отобразить скрыть список задач
+    toolBar->addAction(QIcon(":/resourses/icons/tasks1.png"), "Список задач", this, SLOT(showTasks()));//отобразить скрыть список задач
     toolBar->addSeparator();
-    toolBar->addAction(QIcon(":/resourses/icons/deadline.png"), "Дедлайн", this, &MainWindow::sortDeadline);//блжайшие дедлайны
+    toolBar->addAction(QIcon(":/resourses/icons/deadline.png"), "Дедлайн", this, SLOT(sortDeadline()));//блжайшие дедлайны
     toolBar->addSeparator();
-    toolBar->addAction(QIcon(":/resourses/icons/filter.png"), "Фильтр", this, &MainWindow::filterOut);//фильтрация задач по статусу
-
-    dialogOpen = nullptr;
-    dialogCreate = nullptr;
-    /*dialogSave = nullptr;
-
-    dialogEdit = nullptr;*/
+    toolBar->addAction(QIcon(":/resourses/icons/filter.png"), "Фильтр", this, SLOT(filterOut()));//фильтрация задач по статусу
 
 }
 
-
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow(){}
 
 void MainWindow::addTask() {
-    dialogCreate = new DialogCreate();
-    dialogCreate->show();
+    DialogCreate dialog(this);
+    connect(&dialog, SIGNAL(taskCreated(Task)), myTaskList, SLOT(addTask(Task)));
+    dialog.exec();
 }
 
 void MainWindow::search() {
@@ -111,20 +97,18 @@ void MainWindow::search() {
 }
 
 void MainWindow::openFile() {
-    dialogOpen = new DialogOpen();
-    dialogOpen->setModal(true);
-    connect(dialogOpen, SIGNAL(fileOpened(const QString &)), this, SLOT(displayFileContent(const QString &)));
-    dialogOpen->exec();
-   }
+    DialogOpen dialogOpen(this);
+    connect(&dialogOpen, SIGNAL(fileOpened(QString)), this, SLOT(displayFileContent(QString)));
+    dialogOpen.exec();
+}
 
 void MainWindow::addNewFile() {
-    // код
+    //КОД
 }
 
 void MainWindow::saveMyFile() {
-    // код
+//код
 }
-
 void MainWindow::displayCalendar() {
     // код
 }
@@ -141,4 +125,6 @@ void MainWindow::filterOut() {
     //код
 }
 
-
+void MainWindow::displayFileContent() {
+   //код
+}
