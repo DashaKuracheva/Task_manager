@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include "task.h"
+#include "dialogEdit.h"
 
 class TaskList : public QWidget {
     Q_OBJECT
@@ -30,7 +31,6 @@ private slots:
     void onEditClicked();
     void onDeleteClicked();
 };
-
 
 #endif // TASKLIST_H
 

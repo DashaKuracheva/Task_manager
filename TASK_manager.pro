@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     dialogCreate.cpp \
+    dialogEdit.cpp \
     dialogOpen.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     dialogCreate.h \
+    dialogEdit.h \
     dialogOpen.h \
     mainwindow.h \
     task.h \

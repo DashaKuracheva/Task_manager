@@ -88,11 +88,47 @@ void TaskList::appendTaskItem(int index) {
 
 
 void TaskList::onEditClicked() {
-    /*
-    DialogEdit dialogEdt(this);
-    connect(&dialogEdt, SIGNAL(), , );
-    dialogEdt.exec();
-    */
+    // 1. Получаем кнопку, которая была нажата
+    QPushButton *btn = qobject_cast<QPushButton*>(sender());
+    if (!btn) return;
+
+    // 2. Достаем ID задачи из свойства кнопки
+    int idToEdit = btn->property("taskId").toInt();
+
+    // 3. Ищем индекс задачи в векторе allTasks по её ID
+    int index = -1;
+    for (int i = 0; i < allTasks.size(); ++i) {
+        if (allTasks[i].id == idToEdit) {
+            index = i;
+            break;
+        }
+    }
+
+    // Если задача не найдена (мало ли что), выходим
+    if (index == -1) return;
+
+    // 4. Создаем и запускаем диалог
+    DialogEdit dialog(this);
+
+    // Передаем текущие данные задачи в поля диалога
+    dialog.setTask(allTasks[index]);
+
+    // exec() открывает модальное окно и ждет нажатия "Сохранить" или "Отмена"
+    if (dialog.exec() == QDialog::Accepted) {
+        // Если нажали "Сохранить", заменяем задачу в векторе новыми данными
+        Task updatedTask = dialog.getTask();
+
+        // КРИТИЧЕСКИ ВАЖНО: сохраняем старый ID, чтобы не сломать логику
+        updatedTask.id = idToEdit;
+
+        allTasks[index] = updatedTask;
+
+        // Перерисовываем список, чтобы увидеть изменения
+        refreshList();
+
+        // Опционально: можно подать сигнал главному окну об изменении (для "звездочки" в заголовке)
+        // emit taskDataChanged();
+    }
 }
 
 void TaskList::onDeleteClicked() {
