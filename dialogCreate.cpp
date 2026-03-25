@@ -17,9 +17,10 @@ DialogCreate::DialogCreate(QWidget *parent) : QDialog(parent) {
     edtDescription = new QTextEdit(this);
 
     dline = new QLabel("Срок выполнения:", this);
-    data = new QDateTimeEdit(QDateTime::currentDateTime(), this);
-    data->setCalendarPopup(true);
-    data->setDisplayFormat("dd.MM.yyyy");
+    dataDead = new QDateTimeEdit(QDateTime::currentDateTime(), this);
+    dataDead->setCalendarPopup(true);
+    dataDead->setDisplayFormat("dd.MM.yyyy HH:mm");
+    dataDead->setTimeSpec(Qt::LocalTime);
 
     statusCombo = new QComboBox(this);
     statusCombo->addItem("New");
@@ -33,7 +34,7 @@ DialogCreate::DialogCreate(QWidget *parent) : QDialog(parent) {
     mnLayout->addWidget(edtDescription);
 
     mnLayout->addWidget(dline);
-    mnLayout->addWidget(data);
+    mnLayout->addWidget(dataDead);
 
     mnLayout->addWidget(new QLabel("Статус:", this));
     mnLayout->addWidget(statusCombo);
@@ -58,7 +59,7 @@ void DialogCreate::create() {
     Task t;
     t.title = title;
     t.description = edtDescription->toPlainText().trimmed();
-    t.deadline = data->dateTime();
+    t.deadline = dataDead->dateTime();
 
     switch (statusCombo->currentIndex()) {
         case 0: t.status = TaskStatus::New; break;

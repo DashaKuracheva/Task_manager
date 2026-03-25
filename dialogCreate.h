@@ -18,7 +18,7 @@ private:
     QLineEdit *edtName;
     QLabel *name, *description, *dline;
     QTextEdit *edtDescription;
-    QDateTimeEdit *data;
+    QDateTimeEdit *dataDead;
     QComboBox *statusCombo;
 
 signals:
