@@ -25,6 +25,7 @@ private:
     QAction *open, *saveFile, *newFile, *tasksList, *calendar, *deadline, *filter;
     TaskList *myTaskList;
     QString currentFilePath;
+    QDialog *calendarDialog= nullptr;
 
 private slots:
     void addTask();
@@ -37,6 +38,7 @@ private slots:
     void sortDeadline();//сортировка по дедлайну *deadline
     void filterOut();// фильтрация по статусу *filter
     void displayFileContent(const QString &content);
+    void onCalendarDestroyed(QObject* obj);
 
 };
 

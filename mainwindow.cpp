@@ -140,11 +140,41 @@ void MainWindow::saveMyFile() {
     }
 
 void MainWindow::displayCalendar() {
-    // код
+    if (calendarDialog && calendarDialog->isVisible()) {
+        calendarDialog->close();
+        return;
+    }
+    if (!calendarDialog) {
+        calendarDialog = new QDialog(this);
+        calendarDialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(calendarDialog, SIGNAL(destroyed(QObject*)),this, SLOT(onCalendarDestroyed(QObject*)));
+
+        calendarDialog->setWindowTitle("Календарь");
+        calendarDialog->resize(350, 300);
+
+        QVBoxLayout *layout = new QVBoxLayout(calendarDialog);
+        QCalendarWidget *calendar = new QCalendarWidget(calendarDialog);
+        calendar->setSelectedDate(QDate::currentDate());
+        calendar->setGridVisible(true);
+        layout->addWidget(calendar);
+
+        QPushButton *btnClose = new QPushButton("Закрыть", calendarDialog);
+        connect(btnClose, SIGNAL(clicked()), calendarDialog, SLOT(close()));
+        layout->addWidget(btnClose);
+    }
+
+    calendarDialog->show();
+    calendarDialog->raise();
+    calendarDialog->activateWindow();
+}
+
+void MainWindow::onCalendarDestroyed(QObject* obj) {
+    Q_UNUSED(obj); // Чтобы компилятор не ругался на неиспользуемую переменную
+    calendarDialog = nullptr;
 }
 
 void MainWindow::showTasks() {
-    //myTaskView->setVisible(!myTaskView->isVisible());
+    myTaskList->setVisible(!myTaskList->isVisible());
 }
 
 void MainWindow::sortDeadline() {
