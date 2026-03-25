@@ -87,9 +87,28 @@ void TaskList::appendTaskItem(int index) {
 }
 
 
-void TaskList::onEditClicked() {}
+void TaskList::onEditClicked() {
+    /*
+    DialogEdit dialogEdt(this);
+    connect(&dialogEdt, SIGNAL(), , );
+    dialogEdt.exec();
+    */
+}
 
-void TaskList::onDeleteClicked() {}
+void TaskList::onDeleteClicked() {
+    QPushButton *btn = qobject_cast<QPushButton*>(sender());
+    if (!btn) return;
+    int idToDelete = btn->property("taskId").toInt();
+
+    if (QMessageBox::question(this, "Удаление",
+                              "Вы уверены, что хотите удалить эту задачу?",
+                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    {
+        allTasks.erase(std::remove_if(allTasks.begin(), allTasks.end(),[idToDelete](const Task &t) {return t.id == idToDelete;}),
+        allTasks.end());
+        refreshList();
+    }
+}
 
 
 QJsonArray TaskList::JSArr() {
